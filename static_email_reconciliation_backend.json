@@ -1,0 +1,19 @@
+{
+  "source": "Backend email capture service",
+  "fileName": "cash_sweep_input_May2026.csv",
+  "emailBody": {
+    "sender": "Drew McKeown",
+    "receivedDate": "2026-06-03",
+    "subject": "Cash Sweep - May 2026",
+    "totalAmountUsd": 1240500.00
+  },
+  "capturedFile": {
+    "dateTab": "2026-05-31",
+    "totalAmountUsd": 1240500.00
+  },
+  "reconciliation": {
+    "differenceUsd": 0.00,
+    "status": "Matched",
+    "message": "Email body amount matches the captured file total."
+  }
+}

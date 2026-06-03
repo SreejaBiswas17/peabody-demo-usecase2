@@ -1,0 +1,81 @@
+﻿================================================================
+SECTION 1 — EMAIL METADATA (Step 1: Input Receipt)
+Use this data to fill the Email Body Validation form
+================================================================
+FIELD,VALUE
+Sender,Drew McKeown
+Email Date,2026-05-31
+Email Subject,Cash Sweep - May 2026
+Total Amount per Email Body (USD),8176450.00
+Notes,Monthly IC Cash Sweep for May 2026. All entries verified by AP team.
+
+================================================================
+SECTION 2 — DATE-WISE TAB RECONCILIATION (Step 2: Data Validation)
+Email Amount must match File Amount for all rows to show Matched
+================================================================
+Tab Date,Email Amount (USD),File Amount (USD),Expected Status
+2026-05-27,3400000.00,3400000.00,Matched
+2026-05-28,560750.00,560750.00,Matched
+2026-05-29,2100000.00,2100000.00,Matched
+2026-05-30,875200.00,875200.00,Matched
+2026-05-31,1240500.00,1240500.00,Matched
+GRAND TOTAL,8176450.00,8176450.00,
+
+================================================================
+SECTION 3 — COLOR-CODED SUBTOTALS (Step 2: Data Validation)
+Enter these File Sum and Subtotal values to confirm a Match
+================================================================
+Color,File Sum (USD),Subtotal (USD),Expected Status
+Yellow Highlighted,3960750.00,3960750.00,Values Match
+Green Highlighted,2975200.00,2975200.00,Values Match
+Blue Highlighted,1240500.00,1240500.00,Values Match
+
+================================================================
+SECTION 4 — AP TAB DATA (Step 4: AP Data Entry)
+Copy these rows into the AP Data Entry table
+================================================================
+Date Tab,Company Code,Counterparty Doc #,Account,Amount (USD),Profit Center,Partner Profit Center,Text Description,Posting Key
+2026-05-27,US01,9000010001,113010,3400000.00,PC-US01-100,PC-CP01-200,May26 Cash Sweep - US01 vs CP01,31
+2026-05-28,US02,9000010002,113020,560750.00,PC-US02-101,PC-CP02-201,May26 Cash Sweep - US02 vs CP02,31
+2026-05-29,US03,9000010003,113030,2100000.00,PC-US03-102,PC-CP03-202,May26 Cash Sweep - US03 vs CP03,31
+2026-05-30,US04,9000010004,113040,875200.00,PC-US04-103,PC-CP04-203,May26 Cash Sweep - US04 vs CP04,31
+2026-05-31,US01,9000010005,113010,1240500.00,PC-US01-100,PC-CP05-204,May26 Cash Sweep - US01 vs CP05,31
+AP TOTAL,,,,,,,8176450.00,
+
+================================================================
+SECTION 5 — AR TAB DATA (Step 5: AR Data Validation)
+Copy these rows into the AR Data Entry table (or use Sync from AP)
+AR amounts mirror AP — Account Type must be D (Customer)
+================================================================
+Date Tab,Company,Counterpart #,Account,Amount (USD),Tax Code,Account Type,Profit Center,Text
+2026-05-27,CP01,9000010001,213010,3400000.00,V0,D,PC-CP01-200,May26 Cash Sweep - CP01 vs US01
+2026-05-28,CP02,9000010002,213020,560750.00,V0,D,PC-CP02-201,May26 Cash Sweep - CP02 vs US02
+2026-05-29,CP03,9000010003,213030,2100000.00,V0,D,PC-CP03-202,May26 Cash Sweep - CP03 vs US03
+2026-05-30,CP04,9000010004,213040,875200.00,V0,D,PC-CP04-203,May26 Cash Sweep - CP04 vs US04
+2026-05-31,CP05,9000010005,213010,1240500.00,V0,D,PC-CP05-204,May26 Cash Sweep - CP05 vs US01
+AR TOTAL,,,,8176450.00,,,
+
+================================================================
+SECTION 6 — SAP F-30 DOCUMENT HEADER (Step 6: SAP Workflow)
+Use this data to fill the SAP Transaction form
+================================================================
+FIELD,VALUE
+Document Date,2026-05-31
+Translation Date,2026-05-31
+Posting Date,2026-06-03
+Currency,USD
+Company Code,US01
+Document Type,AB
+Reference #,SB
+Document Header Text,CSP I/C Invoice Clearing
+Transfer Posting with Clearing,YES (must be checked)
+
+================================================================
+SECTION 7 — FILE PREPARATION (Step 3: File Preparation)
+================================================================
+FIELD,VALUE
+Current Month,May
+Current Year,2026
+Generated File Name,CSP_IC_Invoice_2026_05.xlsx
+Previous Month File,CSP_IC_Invoice_2026_04.xlsx
+Source Folder Path,\\server\share\CSP\FY2026\May\

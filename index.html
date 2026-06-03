@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S2C Cash Sweep Entry | SAP Automation Portal</title>
+  <meta name="description" content="Automate and manage the S2C Cash Sweep Entry process for SAP F-30 T-code transactions with full AP/AR workflow support." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img class="brand-logo" src="peabody-logo.png" alt="Peabody" />
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">WORKFLOW</div>
+      <a href="#" class="nav-item active" data-section="dashboard" onclick="showSection('dashboard',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+        <div class="nav-badge">20</div>
+      </a>
+      <a href="#" class="nav-item" data-section="input-receipt" onclick="showSection('input-receipt',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>Input Receipt</span>
+      </a>
+      <a href="#" class="nav-item" data-section="data-validation" onclick="showSection('data-validation',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Data Validation</span>
+      </a>
+      <a href="#" class="nav-item" data-section="file-prep" onclick="showSection('file-prep',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>File Preparation</span>
+      </a>
+      <a href="#" class="nav-item" data-section="ap-data" onclick="showSection('ap-data',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>AP Data Entry</span>
+      </a>
+      <a href="#" class="nav-item" data-section="ar-data" onclick="showSection('ar-data',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span>AR Data Entry</span>
+      </a>
+      <a href="#" class="nav-item" data-section="sap-workflow" onclick="showSection('sap-workflow',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        <span>SAP Workflow</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:16px;">REPORTS</div>
+      <a href="#" class="nav-item" data-section="volume-tracker" onclick="showSection('volume-tracker',this)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Volume Tracker</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SB</div>
+      <div class="user-info">
+        <span class="user-name">Srabani Basak</span>
+        <span class="user-role">AR Team · S2C</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="toggleSidebar()" id="menuToggle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="breadcrumb">
+          <span id="breadcrumbSection">Dashboard</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          SAP PR3 Connected
+        </div>
+        <div class="topbar-date" id="currentDate"></div>
+        <button class="notif-btn" id="notifBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-count">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============================= DASHBOARD ============================= -->
+    <section class="section active" id="section-dashboard">
+      <div class="section-header">
+        <h1>Cash Sweep Entry Dashboard</h1>
+        <p>Monthly workflow overview — Automate, Validate & Post SAP F-30 Transactions</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-purple">
+          <div class="kpi-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="kpi-data">
+            <div class="kpi-value">20</div>
+            <div class="kpi-label">Monthly Inflow</div>
+          </div>
+          <div class="kpi-trend up">+8%</div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div class="kpi-data">
+            <div class="kpi-value">17</div>
+            <div class="kpi-label">Validated</div>
+          </div>
+          <div class="kpi-trend up">85%</div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="kpi-data">
+            <div class="kpi-value">14</div>
+            <div class="kpi-label">Posted to SAP</div>
+          </div>
+          <div class="kpi-trend up">70%</div>
+        </div>
+        <div class="kpi-card kpi-orange">
+          <div class="kpi-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="kpi-data">
+            <div class="kpi-value">3</div>
+            <div class="kpi-label">Pending Review</div>
+          </div>
+          <div class="kpi-trend down">15%</div>
+        </div>
+      </div>
+
+      <!-- Process Flow -->
+      <div class="card">
+        <div class="card-header">
+          <h3>End-to-End Process Flow</h3>
+          <span class="card-badge">7 Steps</span>
+        </div>
+        <div class="process-flow">
+          <div class="flow-step pending" onclick="showSection('input-receipt', document.querySelector('[data-section=input-receipt]'))">
+            <div class="flow-step-num">01</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="flow-step-text">Input Receipt</div>
+            <div class="flow-step-sub">Drew & Nicole → AR Team</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending" onclick="showSection('data-validation', document.querySelector('[data-section=data-validation]'))">
+            <div class="flow-step-num">02</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>
+            </div>
+            <div class="flow-step-text">Data Validation</div>
+            <div class="flow-step-sub">Reconcile with email</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending" onclick="showSection('file-prep', document.querySelector('[data-section=file-prep]'))">
+            <div class="flow-step-num">03</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="flow-step-text">File Preparation</div>
+            <div class="flow-step-sub">Copy & Rename</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending" onclick="showSection('ap-data', document.querySelector('[data-section=ap-data]'))">
+            <div class="flow-step-num">04</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div class="flow-step-text">AP Data Entry</div>
+            <div class="flow-step-sub">Amounts & Doc #</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending" onclick="showSection('ar-data', document.querySelector('[data-section=ar-data]'))">
+            <div class="flow-step-num">05</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="flow-step-text">AR Validation</div>
+            <div class="flow-step-sub">Match Counterpart #</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending" onclick="showSection('sap-workflow', document.querySelector('[data-section=sap-workflow]'))">
+            <div class="flow-step-num">06</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83"/></svg>
+            </div>
+            <div class="flow-step-text">SAP F-30</div>
+            <div class="flow-step-sub">T-Code F-30 Entry</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step pending">
+            <div class="flow-step-num">07</div>
+            <div class="flow-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="flow-step-text">Posted</div>
+            <div class="flow-step-sub">Document Saved</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Entries -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Entries</h3>
+            <button class="btn-ghost" onclick="showSection('volume-tracker', document.querySelector('[data-section=volume-tracker]'))">View All</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Company</th>
+                <th>Amount (USD)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>May 31, 2026</td>
+                <td>US01</td>
+                <td class="amount">$1,240,500</td>
+                <td><span class="badge badge-green">Posted</span></td>
+              </tr>
+              <tr>
+                <td>May 30, 2026</td>
+                <td>US02</td>
+                <td class="amount">$875,200</td>
+                <td><span class="badge badge-green">Posted</span></td>
+              </tr>
+              <tr>
+                <td>May 29, 2026</td>
+                <td>US03</td>
+                <td class="amount">$2,100,000</td>
+                <td><span class="badge badge-yellow">Pending</span></td>
+              </tr>
+              <tr>
+                <td>May 28, 2026</td>
+                <td>US01</td>
+                <td class="amount">$560,750</td>
+                <td><span class="badge badge-green">Posted</span></td>
+              </tr>
+              <tr>
+                <td>May 27, 2026</td>
+                <td>US04</td>
+                <td class="amount">$3,400,000</td>
+                <td><span class="badge badge-red">Review</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Key Contacts</h3>
+          </div>
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-avatar" style="background: #0073a8; color: white;">DM</div>
+              <div class="contact-info">
+                <div class="contact-name">Drew McKeown</div>
+                <div class="contact-role">Input File Sender</div>
+                <div class="contact-tag">AP</div>
+              </div>
+              <div class="contact-status online"></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-avatar" style="background: #005f8f; color: white;">NV</div>
+              <div class="contact-info">
+                <div class="contact-name">Nicole Van Niekerk</div>
+                <div class="contact-role">Input File Sender</div>
+                <div class="contact-tag">AR</div>
+              </div>
+              <div class="contact-status online"></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-avatar" style="background: #475569; color: white;">SB</div>
+              <div class="contact-info">
+                <div class="contact-name">Srabani Basak</div>
+                <div class="contact-role">AR Team · Processor</div>
+                <div class="contact-tag">Owner</div>
+              </div>
+              <div class="contact-status online"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= INPUT RECEIPT ============================= -->
+    <section class="section" id="section-input-receipt">
+      <div class="section-header">
+        <h1>Step 1 — Input Receipt</h1>
+        <p>Receive and log input files from Drew McKeown & Nicole Van Niekerk</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Upload Input File</h3>
+            <span class="card-badge">Step 1 of 7</span>
+          </div>
+
+          <div class="upload-zone" id="uploadZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            <div class="upload-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <p class="upload-title">Drag & Drop Input File Here</p>
+            <p class="upload-sub">Supports .xlsx, .xls, .csv files</p>
+            <label class="btn-primary" for="fileInput" style="cursor:pointer;">Browse File</label>
+            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileSelect(event)" />
+          </div>
+
+          <div class="file-info" id="fileInfo" style="display:none">
+            <div class="file-info-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div class="file-name" id="fileName">—</div>
+              <div class="file-size" id="fileSize">—</div>
+            </div>
+            <button class="btn-icon-danger" onclick="clearFile()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Email Body Validation</h3>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sender</label>
+            <select class="form-select" id="emailSender">
+              <option value="">Select sender...</option>
+              <option value="drew" selected>Drew McKeown</option>
+              <option value="nicole">Nicole Van Niekerk</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Date</label>
+            <input type="date" class="form-input" id="emailDate" value="2026-06-03" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Subject</label>
+            <input type="text" class="form-input" id="emailSubject" value="Cash Sweep - May 2026" placeholder="Cash Sweep - [Month] [Year]" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Amount per Email Body (USD)</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">$</span>
+              <input type="text" class="form-input has-prefix" id="emailTotalAmount" value="1240500.00" placeholder="0.00" oninput="formatAmount(this)" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes / Remarks</label>
+            <textarea class="form-textarea" id="emailNotes" placeholder="Add any notes from the email body...">Demo email body captured from Drew for May 2026 cash sweep.</textarea>
+          </div>
+          <button class="btn-primary full-width" onclick="saveInputReceipt()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save & Proceed
+          </button>
+        </div>
+      </div>
+
+      <!-- Validation Checkpoints -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Validation Checkpoints</h3>
+          <span class="card-badge warning">2 Checks Required</span>
+        </div>
+        <div class="checkpoint-grid">
+          <div class="checkpoint-card" id="checkpoint1">
+            <div class="checkpoint-num">Check 1</div>
+            <div class="checkpoint-title">Date-wise Tab Totals</div>
+            <div class="checkpoint-desc">Total amount in each date-wise tab of the input file must match the amounts specified in the email body.</div>
+            <div class="checkpoint-status" id="check1Status">
+              <span class="status-indicator pending-ind">Awaiting File</span>
+            </div>
+            <button class="btn-outline" onclick="runCheck1()">Run Check</button>
+          </div>
+          <div class="checkpoint-card" id="checkpoint2">
+            <div class="checkpoint-num">Check 2</div>
+            <div class="checkpoint-title">Color-coded Subtotals</div>
+            <div class="checkpoint-desc">Sum of highlighted (color-coded) areas in the input file must match color-coded subtotals specified in the file.</div>
+            <div class="checkpoint-status" id="check2Status">
+              <span class="status-indicator pending-ind">Awaiting File</span>
+            </div>
+            <button class="btn-outline" onclick="runCheck2()">Run Check</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= DATA VALIDATION ============================= -->
+    <section class="section" id="section-data-validation">
+      <div class="section-header">
+        <h1>Step 2 — Data Validation</h1>
+        <p>Reconcile input file with email body data and verify all amounts match</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Date-wise Tab Reconciliation</h3>
+          <div class="header-actions">
+            <button class="btn-outline btn-sm" onclick="loadStaticValidationDemo()">Load Static Backend File</button>
+            <button class="btn-primary btn-sm" onclick="addTabRow()">+ Add Tab</button>
+          </div>
+        </div>
+        <div class="backend-validation" id="backendValidationPanel">
+          <div>
+            <div class="backend-validation-title">Backend Static File Match</div>
+            <div class="backend-validation-sub" id="backendValidationSub">Static backend file ready: static_email_reconciliation_backend.json</div>
+          </div>
+          <span class="badge badge-blue" id="backendValidationStatus">Ready</span>
+        </div>
+        <table class="data-table" id="tabReconTable">
+          <thead>
+            <tr>
+              <th>Tab Date</th>
+              <th>Email Amount (USD)</th>
+              <th>File Amount (USD)</th>
+              <th>Difference</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tabReconBody">
+            <tr>
+              <td><input type="date" class="table-input" value="2026-05-31" /></td>
+              <td><input type="text" class="table-input" value="1240500.00" placeholder="0.00" oninput="calcDiff(this)" /></td>
+              <td><input type="text" class="table-input" value="1240500.00" placeholder="0.00" oninput="calcDiff(this)" /></td>
+              <td class="diff-cell"><span class="diff-value">—</span></td>
+              <td><span class="badge badge-green">Matched</span></td>
+              <td><button class="btn-icon-danger" onclick="removeTabRow(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-footer">
+          <div class="totals-row">
+            <span class="totals-label">Grand Total</span>
+            <span class="totals-value" id="grandTotalEmail">$0.00</span>
+            <span class="totals-value" id="grandTotalFile">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Color-coded Subtotal Verification</h3>
+        </div>
+        <div class="color-code-grid">
+          <div class="color-code-card" style="--cc:#fbbf24">
+            <div class="cc-header">
+              <div class="cc-swatch" style="background:#fbbf24"></div>
+              <span>Yellow Highlighted</span>
+            </div>
+            <div class="cc-inputs">
+              <div class="cc-input-wrap">
+                <label>File Sum</label>
+                <input type="text" class="form-input" value="420500.00" placeholder="0.00" id="yellowFile" oninput="verifyColor('yellow')" />
+              </div>
+              <div class="cc-input-wrap">
+                <label>Subtotal</label>
+                <input type="text" class="form-input" value="420500.00" placeholder="0.00" id="yellowSub" oninput="verifyColor('yellow')" />
+              </div>
+            </div>
+            <div class="cc-result" id="yellowResult">—</div>
+          </div>
+          <div class="color-code-card" style="--cc:#34d399">
+            <div class="cc-header">
+              <div class="cc-swatch" style="background:#34d399"></div>
+              <span>Green Highlighted</span>
+            </div>
+            <div class="cc-inputs">
+              <div class="cc-input-wrap">
+                <label>File Sum</label>
+                <input type="text" class="form-input" value="315000.00" placeholder="0.00" id="greenFile" oninput="verifyColor('green')" />
+              </div>
+              <div class="cc-input-wrap">
+                <label>Subtotal</label>
+                <input type="text" class="form-input" value="315000.00" placeholder="0.00" id="greenSub" oninput="verifyColor('green')" />
+              </div>
+            </div>
+            <div class="cc-result" id="greenResult">—</div>
+          </div>
+          <div class="color-code-card" style="--cc:#60a5fa">
+            <div class="cc-header">
+              <div class="cc-swatch" style="background:#60a5fa"></div>
+              <span>Blue Highlighted</span>
+            </div>
+            <div class="cc-inputs">
+              <div class="cc-input-wrap">
+                <label>File Sum</label>
+                <input type="text" class="form-input" value="505000.00" placeholder="0.00" id="blueFile" oninput="verifyColor('blue')" />
+              </div>
+              <div class="cc-input-wrap">
+                <label>Subtotal</label>
+                <input type="text" class="form-input" value="505000.00" placeholder="0.00" id="blueSub" oninput="verifyColor('blue')" />
+              </div>
+            </div>
+            <div class="cc-result" id="blueResult">—</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="markValidationComplete()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>
+          Mark Validation Complete
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================= FILE PREPARATION ============================= -->
+    <section class="section" id="section-file-prep">
+      <div class="section-header">
+        <h1>Step 3 — File Preparation & Naming</h1>
+        <p>Copy last month's file and rename with current date convention</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <h3>File Naming Convention</h3>
+          </div>
+          <div class="naming-preview">
+            <div class="naming-preview-label">Generated File Name</div>
+            <div class="naming-preview-value" id="generatedFileName">CSP_IC_Invoice_2026_05.xlsx</div>
+            <button class="btn-icon" onclick="copyFileName()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Month</label>
+              <select class="form-select" id="fileMonth" onchange="updateFileName()">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05" selected>May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Year</label>
+              <input type="number" class="form-input" id="fileYear" value="2026" min="2020" max="2099" oninput="updateFileName()" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Source Location (Folder Path)</label>
+            <div class="path-input-wrap">
+              <input type="text" class="form-input" id="folderPath" value="\\server\share\CSP\FY2026\" placeholder="\\server\share\CSP\FY2026\" />
+              <button class="btn-outline btn-sm">Browse</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Previous Month File</label>
+            <input type="text" class="form-input" id="prevFileName" placeholder="CSP_IC_Invoice_2026_04.xlsx" readonly />
+          </div>
+          <button class="btn-primary full-width" onclick="confirmFilePrepared()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Confirm File Prepared
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Preparation Checklist</h3>
+          </div>
+          <div class="checklist">
+            <label class="checklist-item">
+              <input type="checkbox" class="checklist-check" id="chk1" checked />
+              <span class="checkmark"></span>
+              <div class="checklist-text">
+                <div class="checklist-title">Location folder accessed</div>
+                <div class="checklist-sub">Open the designated network folder</div>
+              </div>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox" class="checklist-check" id="chk2" checked />
+              <span class="checkmark"></span>
+              <div class="checklist-text">
+                <div class="checklist-title">Last month's file copied</div>
+                <div class="checklist-sub">Create a copy of previous month's template</div>
+              </div>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox" class="checklist-check" id="chk3" checked />
+              <span class="checkmark"></span>
+              <div class="checklist-text">
+                <div class="checklist-title">File renamed with current date</div>
+                <div class="checklist-sub">Apply date-based naming convention</div>
+              </div>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox" class="checklist-check" id="chk4" checked />
+              <span class="checkmark"></span>
+              <div class="checklist-text">
+                <div class="checklist-title">File saved in correct location</div>
+                <div class="checklist-sub">Verify file is in the proper directory</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= AP DATA ENTRY ============================= -->
+    <section class="section" id="section-ap-data">
+      <div class="section-header">
+        <h1>Step 4 — AP Data Collection</h1>
+        <p>Fetch amounts and counterparty document numbers from input file (AP Tab) by date</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>AP Tab Data Entry</h3>
+          <div class="header-actions">
+            <select class="form-select select-sm" id="apDateFilter">
+              <option value="">All Dates</option>
+            </select>
+            <button class="btn-primary btn-sm" onclick="addAPRow()">+ Add Row</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="apTable">
+            <thead>
+              <tr>
+                <th>Date Tab</th>
+                <th>Company Code</th>
+                <th>Counterparty Doc #</th>
+                <th>Account</th>
+                <th>Amount (USD)</th>
+                <th>Profit Center</th>
+                <th>Partner Profit Center</th>
+                <th>Text Description</th>
+                <th>Posting Key</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="apTableBody">
+              <tr>
+                <td><input type="date" class="table-input" value="2026-05-31" /></td>
+                <td><input type="text" class="table-input" value="US01" maxlength="4" style="text-transform:uppercase" /></td>
+                <td><input type="text" class="table-input" value="90018452" /></td>
+                <td><input type="text" class="table-input" value="200145" /></td>
+                <td><input type="text" class="table-input" value="1240500.00" oninput="updateAPTotal()" /></td>
+                <td><input type="text" class="table-input" value="PC1001" /></td>
+                <td><input type="text" class="table-input" value="PPC2200" /></td>
+                <td><input type="text" class="table-input" value="Cash Sweep May 2026" /></td>
+                <td>
+                  <select class="table-select">
+                    <option>31</option>
+                    <option>40</option>
+                    <option>50</option>
+                    <option>21</option>
+                  </select>
+                </td>
+                <td><button class="btn-icon-danger" onclick="removeRow(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="total-summary">
+            <span>AP Total:</span>
+            <span class="total-amount" id="apTotal">$0.00</span>
+          </div>
+          <button class="btn-primary" onclick="saveAPData()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save AP Data
+          </button>
+        </div>
+      </div>
+
+      <div class="info-banner info-blue">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <strong>AP Tab Instructions:</strong> Access the first tab (AP) of the input file. For each entry, fetch the amount and counterparty document number based on date tab and counterparty. Profit Center and Partner Profit Center are mandatory — click <em>More</em> in SAP to enter Partner PC.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= AR DATA ENTRY ============================= -->
+    <section class="section" id="section-ar-data">
+      <div class="section-header">
+        <h1>Step 5 — AR Data Validation</h1>
+        <p>AR tab is derived from the AP tab — validate amounts per company and counterpart document number</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>AR Tab Data Entry</h3>
+          <div class="header-actions">
+            <button class="btn-outline btn-sm" onclick="syncFromAP()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+              Sync from AP
+            </button>
+            <button class="btn-primary btn-sm" onclick="addARRow()">+ Add Row</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="arTable">
+            <thead>
+              <tr>
+                <th>Date Tab</th>
+                <th>Company</th>
+                <th>Counterpart #</th>
+                <th>Account</th>
+                <th>Amount (USD)</th>
+                <th>Tax Code</th>
+                <th>Account Type</th>
+                <th>Profit Center</th>
+                <th>Text</th>
+                <th>Validated</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="arTableBody">
+              <tr>
+                <td><input type="date" class="table-input" value="2026-05-31" /></td>
+                <td><input type="text" class="table-input" value="US01" /></td>
+                <td><input type="text" class="table-input" value="90018452" /></td>
+                <td><input type="text" class="table-input" value="140010" /></td>
+                <td><input type="text" class="table-input" value="1240500.00" /></td>
+                <td><input type="text" class="table-input" value="O1" style="width:80px" /></td>
+                <td>
+                  <select class="table-select">
+                    <option value="D">D - Customer</option>
+                    <option value="K">K - Vendor</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" value="PC1001" /></td>
+                <td><input type="text" class="table-input" value="Cash Sweep AR May 2026" /></td>
+                <td>
+                  <label class="toggle-wrap">
+                    <input type="checkbox" class="toggle-input" onchange="updateARValidation(this)" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </td>
+                <td><button class="btn-icon-danger" onclick="removeRow(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="total-summary">
+            <span>AR Total:</span>
+            <span class="total-amount" id="arTotal">$0.00</span>
+          </div>
+          <button class="btn-primary" onclick="saveARData()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save AR Data
+          </button>
+        </div>
+      </div>
+
+      <div class="info-banner info-orange">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>
+          <strong>AR Exception:</strong> Unlike AP processing, AR tab requires a <strong>Tax Code</strong> from the Tax Code column. Account Type must be set to <strong>D</strong> (Customer) before clearing Customer open items, same way as Vendor open items were cleared in AP.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= SAP WORKFLOW ============================= -->
+    <section class="section" id="section-sap-workflow">
+      <div class="section-header">
+        <h1>Step 6 — SAP Transaction & Workflow</h1>
+        <p>Log into SAP S/4 PR3 · T-code F-30 · Transfer Posting with Clearing</p>
+      </div>
+
+      <div class="sap-warning-banner">
+        <div class="sap-warning-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="sap-warning-content">
+          <div class="sap-warning-title">Critical SAP Fields — FX Risk</div>
+          <div class="sap-warning-desc">Translation Date, Currency, and Company Code are sensitive fields. Any errors can result in significant FX differences in $MN. Review all entries carefully before saving.</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- F-30 Document Header -->
+        <div class="card">
+          <div class="card-header">
+            <h3>
+              <span class="sap-tcode">T-Code: F-30</span>
+              Document Header
+            </h3>
+          </div>
+
+          <div class="sap-field-grid">
+            <div class="sap-field critical">
+              <label class="sap-label">
+                Document Date
+                <span class="field-required">*</span>
+              </label>
+              <input type="date" class="sap-input" id="docDate" value="2026-05-31" />
+              <div class="sap-hint">From the first tab of input file</div>
+            </div>
+
+            <div class="sap-field critical">
+              <label class="sap-label">
+                Translation Date
+                <span class="field-required">*</span>
+                <span class="critical-badge">CRITICAL</span>
+              </label>
+              <input type="date" class="sap-input" id="translationDate" value="2026-05-31" />
+              <div class="sap-hint">Per first tab of input file — FX sensitive</div>
+            </div>
+
+            <div class="sap-field">
+              <label class="sap-label">Posting Date <span class="field-required">*</span></label>
+              <input type="date" class="sap-input" id="postingDate" />
+              <div class="sap-hint">Use today's preparation date</div>
+            </div>
+
+            <div class="sap-field critical">
+              <label class="sap-label">
+                Currency
+                <span class="field-required">*</span>
+                <span class="critical-badge">CRITICAL</span>
+              </label>
+              <select class="sap-input" id="currency">
+                <option value="USD" selected>USD — US Dollar</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="GBP">GBP — British Pound</option>
+                <option value="JPY">JPY — Japanese Yen</option>
+              </select>
+              <div class="sap-hint">Must be USD for Cash Sweep</div>
+            </div>
+
+            <div class="sap-field critical">
+              <label class="sap-label">
+                Company Code
+                <span class="field-required">*</span>
+                <span class="critical-badge">CRITICAL</span>
+              </label>
+              <input type="text" class="sap-input" id="companyCode" value="US01" maxlength="4" style="text-transform:uppercase" />
+              <div class="sap-hint">Based on AP Tab</div>
+            </div>
+
+            <div class="sap-field">
+              <label class="sap-label">Document Type</label>
+              <input type="text" class="sap-input" id="docType" value="AB" readonly />
+              <div class="sap-hint">Fixed: AB</div>
+            </div>
+
+            <div class="sap-field">
+              <label class="sap-label">Reference #</label>
+              <input type="text" class="sap-input" id="refNum" value="SB" />
+              <div class="sap-hint">Enter your name initials</div>
+            </div>
+
+            <div class="sap-field full-span">
+              <label class="sap-label">Document Header Text</label>
+              <input type="text" class="sap-input" id="docHeaderText" value="CSP I/C Invoice Clearing" />
+              <div class="sap-hint">Standard: CSP I/C Invoice Clearing</div>
+            </div>
+
+            <div class="sap-field full-span">
+              <label class="sap-label">Transfer Option</label>
+              <div class="checkbox-option">
+                <input type="checkbox" id="transferPosting" checked class="styled-checkbox" />
+                <label for="transferPosting" class="checkbox-label">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Transfer Posting with Clearing
+                </label>
+              </div>
+              <div class="sap-hint">Must be checked for Cash Sweep entries</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Line Item Entry -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Line Item Entry (First Item)</h3>
+          </div>
+          <div class="sap-field-grid">
+            <div class="sap-field">
+              <label class="sap-label">Posting Key <span class="field-required">*</span></label>
+              <select class="sap-input" id="postingKey">
+                <option value="31">31 — Vendor Credit</option>
+                <option value="40">40 — G/L Debit</option>
+                <option value="50">50 — G/L Credit</option>
+                <option value="21">21 — Vendor Debit</option>
+              </select>
+            </div>
+            <div class="sap-field">
+              <label class="sap-label">Account <span class="field-required">*</span></label>
+              <input type="text" class="sap-input" id="lineAccount" value="200145" />
+            </div>
+            <div class="sap-field">
+              <label class="sap-label">Amount (USD) <span class="field-required">*</span></label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">$</span>
+                <input type="text" class="sap-input has-prefix" id="lineAmount" value="1240500.00" oninput="formatAmount(this)" />
+              </div>
+            </div>
+            <div class="sap-field">
+              <label class="sap-label">Profit Center</label>
+              <input type="text" class="sap-input" id="linePC" value="PC1001" />
+            </div>
+            <div class="sap-field">
+              <label class="sap-label">Partner Profit Center
+                <span class="more-badge">via MORE</span>
+              </label>
+              <input type="text" class="sap-input" id="linePartnerPC" value="PPC2200" />
+            </div>
+            <div class="sap-field full-span">
+              <label class="sap-label">Text</label>
+              <input type="text" class="sap-input" id="lineText" value="Cash Sweep May 2026" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="card-header" style="padding:0 0 12px 0;border:none">
+            <h3 style="font-size:14px">Process Open Items</h3>
+          </div>
+          <div class="sap-field-grid">
+            <div class="sap-field">
+              <label class="sap-label">Clearing Company Code</label>
+              <input type="text" class="sap-input" id="clearCompCode" value="US01" />
+            </div>
+            <div class="sap-field">
+              <label class="sap-label">Clearing Account</label>
+              <input type="text" class="sap-input" id="clearAccount" value="200145" />
+            </div>
+            <div class="sap-field full-span">
+              <label class="sap-label">Account Type</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="accountType" value="K" checked />
+                  <span class="radio-custom"></span>
+                  K — Vendor (AP)
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="accountType" value="D" />
+                  <span class="radio-custom"></span>
+                  D — Customer (AR)
+                </label>
+              </div>
+              <div class="sap-hint">AP = K (Vendor), AR = D (Customer)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAP Workflow Steps -->
+      <div class="card">
+        <div class="card-header">
+          <h3>SAP Entry Workflow Checklist</h3>
+          <span class="card-badge">F-30 Steps</span>
+        </div>
+        <div class="workflow-steps">
+          <div class="workflow-step" id="wf1">
+            <div class="wf-num">1</div>
+            <div class="wf-content">
+              <div class="wf-title">Log into SAP S/4 PR3</div>
+              <div class="wf-desc">Access SAP S/4 HANA Production system PR3 and navigate to T-code F-30</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(1)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf2">
+            <div class="wf-num">2</div>
+            <div class="wf-content">
+              <div class="wf-title">Enter Document Header</div>
+              <div class="wf-desc">Enter Document Date, Translation Date, Posting Date, Currency (USD), Company Code, Type AB, Reference # (initials), Doc Header Text: "CSP I/C Invoice Clearing"</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(2)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf3">
+            <div class="wf-num">3</div>
+            <div class="wf-content">
+              <div class="wf-title">Check Transfer Posting with Clearing</div>
+              <div class="wf-desc">Ensure the "Transfer Posting with Clearing" option is checked before proceeding</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(3)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf4">
+            <div class="wf-num">4</div>
+            <div class="wf-content">
+              <div class="wf-title">Enter First Line Item (AP)</div>
+              <div class="wf-desc">Input Posting Key and Account, press Enter. Enter Amount, Profit Center, Text. Click "More" to add Partner Profit Center</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(4)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf5">
+            <div class="wf-num">5</div>
+            <div class="wf-content">
+              <div class="wf-title">Process Open Items (Vendor — K)</div>
+              <div class="wf-desc">Click "Process Open Items", enter Company Code and Account from AP Tab. Set Account Type = K. Press Enter. Unselect all items, match amounts with AP tab, press Save</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(5)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf6">
+            <div class="wf-num">6</div>
+            <div class="wf-content">
+              <div class="wf-title">AR Tab Entry Processing</div>
+              <div class="wf-desc">Repeat same steps for AR tab. Exception: Enter Tax Code from Tax Code column. Set Account Type = D (Customer) before clearing Customer open items</div>
+            </div>
+            <div class="wf-actions">
+              <button class="wf-btn" onclick="completeStep(6)">Mark Done</button>
+            </div>
+          </div>
+          <div class="workflow-step" id="wf7">
+            <div class="wf-num">7</div>
+            <div class="wf-content">
+              <div class="wf-title">Final Save & Document Number</div>
+              <div class="wf-desc">Press Save to post the document. Record the SAP document number generated.</div>
+            </div>
+            <div class="wf-actions">
+              <input type="text" class="table-input" id="sapDocNum" value="1900004826" placeholder="SAP Doc #" style="width:120px;margin-right:8px" />
+              <button class="wf-btn" onclick="completeStep(7)">Post & Save</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-complete" id="workflowComplete" style="display:none">
+          <div class="complete-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="complete-text">
+            <div class="complete-title">Transaction Posted Successfully</div>
+            <div class="complete-sub">Document has been saved in SAP S/4 PR3</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= VOLUME TRACKER ============================= -->
+    <section class="section" id="section-volume-tracker">
+      <div class="section-header">
+        <h1>Volume Tracker & Reports</h1>
+        <p>Monthly cash sweep entry volume — Target: ~20 entries/month</p>
+      </div>
+
+      <div class="kpi-grid" style="grid-template-columns: repeat(3,1fr)">
+        <div class="kpi-card kpi-purple">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div class="kpi-data"><div class="kpi-value">20</div><div class="kpi-label">Target / Month</div></div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="kpi-data"><div class="kpi-value">14</div><div class="kpi-label">Completed (Jun)</div></div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="kpi-data"><div class="kpi-value">6</div><div class="kpi-label">Remaining</div></div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Monthly Progress — June 2026</h3>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-labels">
+            <span>0</span>
+            <span>Completed: 14/20</span>
+            <span>20</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:70%"></div>
+          </div>
+          <div class="progress-pct">70%</div>
+        </div>
+      </div>
+
+      <!-- Monthly Volume Table -->
+      <div class="card">
+        <div class="card-header">
+          <h3>All Entries — June 2026</h3>
+          <button class="btn-primary btn-sm" onclick="exportData()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
+        </div>
+        <table class="data-table" id="volumeTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Entry Date</th>
+              <th>Company</th>
+              <th>Counterpart</th>
+              <th>AP Amount</th>
+              <th>AR Amount</th>
+              <th>SAP Doc #</th>
+              <th>Posted By</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Jun 2, 2026</td><td>US01</td><td>US-CP-001</td><td class="amount">$1,240,500</td><td class="amount">$1,240,500</td><td class="mono">1900123456</td><td>SB</td><td><span class="badge badge-green">Posted</span></td></tr>
+            <tr><td>2</td><td>Jun 2, 2026</td><td>US02</td><td>US-CP-002</td><td class="amount">$875,200</td><td class="amount">$875,200</td><td class="mono">1900123457</td><td>SB</td><td><span class="badge badge-green">Posted</span></td></tr>
+            <tr><td>3</td><td>Jun 1, 2026</td><td>US03</td><td>US-CP-003</td><td class="amount">$2,100,000</td><td class="amount">$2,100,000</td><td class="mono">—</td><td>SB</td><td><span class="badge badge-yellow">Pending</span></td></tr>
+            <tr><td>4</td><td>May 31, 2026</td><td>US04</td><td>US-CP-004</td><td class="amount">$560,750</td><td class="amount">$560,750</td><td class="mono">1900123410</td><td>SB</td><td><span class="badge badge-green">Posted</span></td></tr>
+            <tr><td>5</td><td>May 30, 2026</td><td>US01</td><td>US-CP-005</td><td class="amount">$3,400,000</td><td class="amount">$3,400,000</td><td class="mono">—</td><td>SB</td><td><span class="badge badge-red">Review</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
